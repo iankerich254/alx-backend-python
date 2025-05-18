@@ -3,7 +3,7 @@
 2-lazy_paginate.py
 
 Implements lazy pagination for the user_data table using a generator.
-Provides both paginate_users and lazy_pagination functions.
+Provides both paginate_users and lazy_paginate functions.
 """
 import seed
 
@@ -23,7 +23,7 @@ def paginate_users(page_size, offset):
     cursor = connection.cursor(dictionary=True)
     cursor.execute(
         f"SELECT user_id, name, email, age FROM user_data "
-        f"LIMIT {page_size} OFFSET {offset}"  
+        f"LIMIT {page_size} OFFSET {offset}"
     )
     rows = cursor.fetchall()
     cursor.close()
@@ -31,7 +31,7 @@ def paginate_users(page_size, offset):
     return rows
 
 
-def lazy_pagination(page_size):
+def lazy_paginate(page_size):
     """
     Generator that lazily fetches and yields pages of users.
 
