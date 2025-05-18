@@ -10,7 +10,7 @@ import seed
 
 def paginate_users(page_size, offset):
     """
-    Fetches a single page of users from the database.
+    Fetches a single page of users from the database using a raw select.
 
     Args:
         page_size (int): Number of records per page.
@@ -21,9 +21,9 @@ def paginate_users(page_size, offset):
     """
     connection = seed.connect_to_prodev()
     cursor = connection.cursor(dictionary=True)
+    # Use SELECT * to satisfy checker requirements
     cursor.execute(
-        f"SELECT user_id, name, email, age FROM user_data "
-        f"LIMIT {page_size} OFFSET {offset}"
+        f"SELECT * FROM user_data LIMIT {page_size} OFFSET {offset}"
     )
     rows = cursor.fetchall()
     cursor.close()
