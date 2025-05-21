@@ -1,6 +1,6 @@
 import sqlite3
 import functools
-import datetime
+from datetime import datetime
 
 # Decorator to log SQL queries
 def log_queries(func):
@@ -12,9 +12,9 @@ def log_queries(func):
         elif len(args) > 0:
             query = args[0]
         print(f"Executing SQL Query: {query}")
-        start_time = datetime.datetime.now()
+        start_time = datetime.now()
         result = func(*args, **kwargs)
-        end_time = datetime.datetime.now()
+        end_time = datetime.now()
         duration = (end_time - start_time).total_seconds()
         print(f"Query executed in {duration:.6f} seconds")
         return result
