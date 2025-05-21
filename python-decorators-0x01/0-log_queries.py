@@ -1,18 +1,23 @@
 import sqlite3
 import functools
+import datetime
 
 # Decorator to log SQL queries
 def log_queries(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # Try to get the query from args or kwargs
         query = None
         if 'query' in kwargs:
             query = kwargs['query']
         elif len(args) > 0:
             query = args[0]
         print(f"Executing SQL Query: {query}")
-        return func(*args, **kwargs)
+        start_time = datetime.datetime.now()
+        result = func(*args, **kwargs)
+        end_time = datetime.datetime.now()
+        duration = (end_time - start_time).total_seconds()
+        print(f"Query executed in {duration:.6f} seconds")
+        return result
     return wrapper
 
 @log_queries
