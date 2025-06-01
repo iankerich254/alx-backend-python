@@ -4,7 +4,7 @@ from .models import Conversation, Message, User
 
 # 2a. UserSerializer (Expose only necessary fields)
 class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
+    full_name = serializers.CharField(source='get_full_name', read_only=True)
 
     class Meta:
         model = User  # or settings.AUTH_USER_MODEL
