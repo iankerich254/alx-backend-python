@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -17,7 +17,10 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = [AllowAny]  # Change to IsAuthenticated in production
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['participants']
+    ordering_fields = ['created_at']
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         # Optionally limit to conversations that include the requesting user
@@ -51,7 +54,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     """
     queryset = Message.objects.all().order_by('timestamp')
     serializer_class = MessageSerializer
-    permission_classes = [AllowAny]  # Change to IsAuthenticated
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['message_id']
+    ordering_fields = ['sent_at']
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         """
