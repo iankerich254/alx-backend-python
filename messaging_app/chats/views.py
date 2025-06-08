@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from .models import Conversation, Message, User
 from .serializers import ConversationSerializer, MessageSerializer, UserSerializer
 from rest_framework.exceptions import PermissionDenied
+from .permissions import IsParticipantOfConversation
+from .filters import MessageFilter
 
 # Create your views here.
 # 3a. ConversationViewSet
@@ -20,7 +22,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['participants']
     ordering_fields = ['created_at']
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def get_queryset(self):
         # Optionally limit to conversations that include the requesting user
@@ -57,7 +59,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['message_id']
     ordering_fields = ['sent_at']
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def perform_create(self, serializer):
         """
