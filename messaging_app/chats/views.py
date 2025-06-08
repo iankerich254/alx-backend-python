@@ -25,11 +25,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, IsParticipantOfConversation]
 
     def get_queryset(self):
-        # Optionally limit to conversations that include the requesting user
-        user = self.request.user
-        if user and user.is_authenticated:
-            return Conversation.objects.filter(participants=user).order_by('-created_at')
-        return Conversation.objects.none()
+        return Conversation.objects.filter(participants=self.request.user)
 
     def perform_create(self, serializer):
         # When creating, ensure the requesting user is included
@@ -82,3 +78,6 @@ class MessageViewSet(viewsets.ModelViewSet):
             )
 
         serializer.save(sender=user, conversation=conversation)
+
+    def get_queryset(self):
+        return Message.objects.filter(conversation__participants=self.request.user)
