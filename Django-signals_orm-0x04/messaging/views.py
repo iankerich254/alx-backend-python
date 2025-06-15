@@ -39,7 +39,7 @@ def unread_messages(request):
     """
     Display unread messages for the current user using the custom manager.
     """
-    unread = Message.unread.for_user(request.user)
+    unread = Message.unread.unread_for_user(request.user).only('id', 'sender', 'content', 'timestamp')
     return render(request, 'messaging/unread.html', {'unread_messages': unread})
 
 
