@@ -11,6 +11,8 @@ WORKDIR /app
 # Install dependencies
 COPY requirements.txt .
 COPY safe_install.py .
+
+# pip install is used in safe_install.py file
 RUN python safe_install.py
 
 # Copy project files
