@@ -1,20 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-messaging
+  name: messaging-green
+  labels:
+    app: messaging
+    version: green
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: messaging
+      version: green
   template:
     metadata:
       labels:
         app: messaging
+        version: green
     spec:
       containers:
         - name: messaging-container
-          image: my_django_image:latest
+          image: my_current_django_image:2.0 
           ports:
             - containerPort: 8000
           resources:
@@ -24,16 +29,3 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: messaging-service
-spec:
-  selector:
-    app: messaging
-  ports:
-    - protocol: TCP
-      port: 8000
-      targetPort: 8000
-  type: ClusterIP
