@@ -11,7 +11,10 @@ configobj==5.0.8
 constantly==23.10.4
 cryptography==41.0.7
 distro==1.9.0
-distro-info==1.7+build1
+Django>=4.0,<5.0
+django-filter
+djangorestframework
+djangorestframework-simplejwt
 httplib2==0.20.4
 hyperlink==21.0.0
 idna==3.6
@@ -26,6 +29,7 @@ lazr.uri==1.0.6
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
+mysqlclient
 netifaces==0.11.0
 oauthlib==3.2.2
 pyasn1==0.4.8
@@ -39,7 +43,7 @@ pyOpenSSL==23.2.0
 pyparsing==3.1.1
 pyrsistent==0.20.0
 pyserial==3.5
-python-apt==2.7.7+ubuntu4
+python-dotenv
 pytz==2024.1
 PyYAML==6.0.1
 requests==2.31.0
@@ -50,8 +54,6 @@ six==1.16.0
 systemd-python==235
 Twisted==24.3.0
 typing_extensions==4.10.0
-ubuntu-pro-client==8001
-unattended-upgrades==0.1
 urllib3==2.0.7
 wadllib==1.3.6
 wheel==0.42.0
