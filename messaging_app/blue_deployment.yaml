@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: messaging-container
-          image: my_django_image:latest
+          image: my_django_image:2.0  # ✅ UPDATED version
           ports:
             - containerPort: 8000
           resources:
