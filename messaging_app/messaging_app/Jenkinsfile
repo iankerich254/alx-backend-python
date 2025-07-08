@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         VENV = 'venv'
+        DOCKER_IMAGE = 'iankerich254/messaging_app:latest'
     }
 
     stages {
@@ -39,6 +40,27 @@ pipeline {
             post {
                 always {
                     junit 'messaging_app/test-results.xml'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                dir('messaging_app') {
+                    script {
+                        sh "docker build -t $DOCKER_IMAGE ."
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'iankerich254', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $DOCKER_IMAGE
+                        docker logout
+                    '''
                 }
             }
         }
