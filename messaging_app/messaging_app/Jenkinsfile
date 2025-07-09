@@ -9,20 +9,20 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                // Print the branch and clone repo
-                sh 'git branch'
+                bat 'git --version'
                 git credentialsId: '5821905a-801f-4c61-bcdc-6d4ef34dbf0e', url: 'https://github.com/iankerich254/alx-backend-python.git'
+                bat 'git branch'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 dir('messaging_app') {
-                    sh '''
-                        python3 -m venv $VENV
-                        . $VENV/bin/activate
-                        pip3 install --upgrade pip
-                        pip3 install -r messaging_app/requirements.txt
+                    bat '''
+                        python -m venv %VENV%
+                        call %VENV%\\Scripts\\activate
+                        pip install --upgrade pip
+                        pip install -r requirements.txt
                     '''
                 }
             }
@@ -31,8 +31,8 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('messaging_app') {
-                    sh '''
-                        . $VENV/bin/activate
+                    bat '''
+                        call %VENV%\\Scripts\\activate
                         pytest --junitxml=test-results.xml
                     '''
                 }
@@ -43,12 +43,11 @@ pipeline {
                 }
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 dir('messaging_app') {
-                    script {
-                        sh "docker build -t $DOCKER_IMAGE ."
-                    }
+                    bat "docker build -t %DOCKER_IMAGE% ."
                 }
             }
         }
@@ -56,9 +55,9 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'iankerich254', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push $DOCKER_IMAGE
+                    bat '''
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                        docker push %DOCKER_IMAGE%
                         docker logout
                     '''
                 }
