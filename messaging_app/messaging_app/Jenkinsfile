@@ -10,7 +10,7 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 bat 'git --version'
-                git credentialsId: '5821905a-801f-4c61-bcdc-6d4ef34dbf0e', url: 'https://github.com/iankerich254/alx-backend-python.git'
+                git branch: 'main', git credentialsId: '5821905a-801f-4c61-bcdc-6d4ef34dbf0e', url: 'https://github.com/iankerich254/alx-backend-python.git'
                 bat 'git branch'
             }
         }
